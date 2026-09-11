@@ -1,0 +1,137 @@
+/* ── Noita palette ──────────────────────────────────────────────────────────
+   void=#010101  mines=#111217   wasteland=#20222d  pits=#2d1d27
+   base=#253138  jungle=#1b2513  vault1=#181a17     vault2=#344a3a
+   hell=#482424  temple=#524b34  cloak=#543f4e
+   water=#7e9792 ice=#7caaca     mana=#6895f3       tele=#85c6c6
+   tablet=#76c395 sludge=#92b71c bone=#c7c7c7       ambrosia=#d5ab34
+   gold=#fff66d  portal=#a75cd7  fungus=#ee538c     blood=#dc5655
+   lava=#f87d01  glyph=#ce2f26
+   ──────────────────────────────────────────────────────────────────────── */
+
+* {
+    font-family: "JetBrains Mono", "FantasqueSansM Nerd Font Mono", monospace;
+    font-size: 16px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: #111217;
+    color: #c7c7c7;
+    border: 1px solid #76c395;
+    padding: 6px 0;
+}
+
+/* ── Workspaces ─────────────────────────────────────────────────────────── */
+
+#workspaces {
+    margin: 0 0px 0 0px;
+    border-right: 1px solid #76c395;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #543f4e;
+    background: transparent;
+    transition: color 0.15s ease;
+    border-right: 1px solid #76c395;
+}
+
+#workspaces button.active {
+    color: #fff66d;
+    font-weight: bold;
+}
+
+#workspaces button.occupied {
+    color: #c7c7c7;
+}
+
+#workspaces button.urgent {
+    color: #ce2f26;
+}
+
+#workspaces button:hover {
+    background: #20222d;
+    color: #c7c7c7;
+}
+
+/* ── Layout mode ────────────────────────────────────────────────────────── */
+
+#custom-layout {
+    padding: 0 12px;
+    color: #76c395;
+    border-right: 1px solid #76c395;
+}
+
+/* ── Window title ───────────────────────────────────────────────────────── */
+
+#window {
+    padding: 0 12px;
+    color: #7e9792;
+}
+
+/* ── Clock ──────────────────────────────────────────────────────────────── */
+
+#custom-clock {
+    padding: 0 16px;
+    font-size: 20px;
+    color: #85c6c6;
+    font-weight: bold;
+}
+
+/* ── Right modules ──────────────────────────────────────────────────────── */
+
+#custom-mouse,
+#custom-keyboard,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#tray {
+    padding: 0 12px;
+    color: #c7c7c7;
+    border-left: 1px solid #76c395;
+}
+
+#custom-mouse {
+    color: #f87d01;
+}
+
+#custom-keyboard {
+    color: #f87d01;
+}
+
+#cpu {
+    color: #6895f3;
+}
+
+#memory {
+    color: #a75cd7;
+}
+
+#network {
+    color: #76c395;
+}
+
+#network.disconnected {
+    color: #543f4e;
+}
+
+#pulseaudio {
+    color: #d5ab34;
+}
+
+#pulseaudio.muted {
+    color: #543f4e;
+}
+
+#tray {
+    padding: 0 8px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
