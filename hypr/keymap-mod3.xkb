@@ -1,0 +1,16 @@
+// Standard US layout with a dedicated desktop modifier.
+// The current keyboard emits Right Alt from its physical Right Super key.
+// keyd maps keys emitting Right Super to F24 for other keyboard layouts.
+// Both routes use Mod3, leaving Left Alt and Left Super separate.
+xkb_keymap {
+    xkb_keycodes { include "evdev+aliases(qwerty)" };
+    xkb_types { include "complete" };
+    xkb_compatibility { include "complete" };
+    xkb_symbols {
+        include "pc+us+inet(evdev)"
+        replace key <RALT> { type = "ONE_LEVEL", [ Hyper_R ] };
+        replace key <FK24> { type = "ONE_LEVEL", [ Hyper_R ] };
+        modifier_map None { <RALT>, <FK24> };
+        modifier_map Mod3 { <RALT>, <FK24> };
+    };
+};

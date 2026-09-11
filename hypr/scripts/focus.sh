@@ -5,7 +5,7 @@
 # focus has no neighbour to find: CMonocleAlgorithm::moveTargetInDirection() only
 # looks for another *monitor* in that direction. With DP-1/DP-2 side by side that
 # makes vertical motion dead in monocle, so route it to the stack cycle instead.
-# Horizontal motion is passed through untouched, so ALT+H/L still crosses monitors.
+# Horizontal motion is passed through untouched, so Right Super+H/L still crosses monitors.
 #
 # Focus itself is what raises the window: monocle hooks window.active and hides
 # every other window (alpha 0 + input block), so whatever we focus comes to front.

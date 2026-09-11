@@ -4,7 +4,8 @@
 local terminal = "wezterm"
 local fileManager = "nemo"
 local menu = "hyprlauncher"
-local mainMod = "ALT"
+-- Physical Right Super emits Right Alt here, mapped to Mod3 by the XKB keymap.
+local mainMod = "MOD3"
 
 -- Displays and workspace placement.
 hl.monitor({ output = "DP-1", mode = "2560x1440@144", position = "0x0", scale = 1 })
@@ -72,6 +73,7 @@ hl.config({
     },
     input = {
         kb_layout = "us",
+        kb_file = "~/.config/hypr/keymap-mod3.xkb",
         kb_variant = "",
         kb_model = "",
         kb_options = "",
@@ -139,8 +141,8 @@ floatAllRule = hl.window_rule({
     float = true,
 })
 
--- Keybindings retain Alt as the main modifier.
--- Alt+F toggles fullscreen and Alt+Shift+F toggles maximize.
+-- Desktop shortcuts use Right Super through Mod3.
+-- Right Super+F toggles fullscreen and Right Super+Shift+F toggles maximize.
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + X", hl.dsp.window.close())
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("hyprlock"))
