@@ -14,6 +14,19 @@ Edit files under `hypr/`, `waybar/`, or `keyd/` and commit changes with Git.
 Keep the repository at its installed location or recreate the link after moving it.
 Migration backups under `hypr/backups/` remain local and are excluded from Git.
 
+`hypr/hyprland.lua` loads these modules from `hypr/config/`:
+
+| File | Contents |
+| --- | --- |
+| `keybindings.lua` | Keyboard and mouse shortcuts, application commands, desktop modifier |
+| `monitors.lua` | Displays and workspace placement |
+| `startup.lua` | Environment variables and startup applications |
+| `appearance.lua` | Layout, borders, effects, and animations |
+| `input.lua` | Keyboard, pointer, gestures, and device settings |
+| `rules.lua` | Window rules and the shared floating-layout handle |
+
+Edits to these modules trigger Hyprland's automatic configuration reload.
+
 On Arch Linux, run `./keyd/setup.sh` to install keyd, link its configuration at
 `/etc/keyd/default.conf`, and enable the service.
 This helper requires administrator authentication and preserves any different

@@ -7,7 +7,7 @@
 #   main      main window + stack (Hyprland calls this layout "master")
 #
 # general:layout has no "floating" value, so that mode is the `float-all`
-# window rule (declared disabled in hyprland.lua) flipped on plus a setfloating
+# window rule (declared disabled in config/rules.lua) flipped on plus a setfloating
 # pass over existing windows. Special-category values can't be read back via
 # `hyprctl getoption`, so the mode is tracked in a state file; every press
 # re-asserts the whole target state, so a stale file costs one extra keypress.
