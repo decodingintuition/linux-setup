@@ -37,6 +37,7 @@ The keyboard mappings follow the current keyboard's physical labels:
 
 - Left Super + HJKL sends arrow keys.
 - Left Alt supplies application shortcuts.
+- Right Control supplies Control + Alt for Emacs Control + Meta shortcuts.
 - Right Super supplies Mod3 for Hyprland keyboard and mouse shortcuts.
 
 The keyboard reports different modifier names from its physical labels.
