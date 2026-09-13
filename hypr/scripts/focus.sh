@@ -14,6 +14,14 @@ set -euo pipefail
 
 dir=${1:?usage: focus.sh <u|d|l|r>}
 
+case "$dir" in
+    u) direction=up ;;
+    d) direction=down ;;
+    l) direction=left ;;
+    r) direction=right ;;
+    *) printf 'Invalid direction: %s\n' "$dir" >&2; exit 2 ;;
+esac
+
 layout=$(hyprctl activeworkspace -j | jq -r '.tiledLayout')
 floating=$(hyprctl activewindow -j | jq -r '.floating // false')
 
@@ -21,10 +29,10 @@ floating=$(hyprctl activewindow -j | jq -r '.floating // false')
 # floating mode everything floats), so directional focus is meaningful there.
 if [[ $layout == monocle && $floating == false ]]; then
     case "$dir" in
-        u) hyprctl dispatch layoutmsg cycleprev > /dev/null ;;
-        d) hyprctl dispatch layoutmsg cyclenext > /dev/null ;;
-        *) hyprctl dispatch movefocus "$dir" > /dev/null ;;
+        u) hyprctl dispatch 'hl.dsp.layout("cycleprev")' > /dev/null ;;
+        d) hyprctl dispatch 'hl.dsp.layout("cyclenext")' > /dev/null ;;
+        *) hyprctl dispatch "hl.dsp.focus({ direction = \"$direction\" })" > /dev/null ;;
     esac
 else
-    hyprctl dispatch movefocus "$dir" > /dev/null
+    hyprctl dispatch "hl.dsp.focus({ direction = \"$direction\" })" > /dev/null
 fi
