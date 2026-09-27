@@ -18,7 +18,7 @@ hl.window_rule({
     move = { 20, "monitor_h-120" },
     float = true,
 })
--- Global handle used by cycle-layout.sh through hyprctl eval.
+-- Global floating mode is managed by config.layout.
 floatAllRule = hl.window_rule({
     name = "float-all",
     enabled = false,

@@ -21,11 +21,18 @@ Migration backups under `hypr/backups/` remain local and are excluded from Git.
 | `keybindings.lua` | Keyboard and mouse shortcuts, application commands, desktop modifier |
 | `monitors.lua` | Displays and workspace placement |
 | `startup.lua` | Environment variables and startup applications |
-| `appearance.lua` | Layout, borders, effects, and animations |
+| `appearance.lua` | Default layout, borders, effects, and animations |
+| `layout.lua` | Current layout, floating toggle, and tiled-layout memory |
 | `input.lua` | Keyboard, pointer, gestures, and device settings |
 | `rules.lua` | Window rules and the shared floating-layout handle |
 
 Edits to these modules trigger Hyprland's automatic configuration reload.
+
+New sessions start in monocle, and layout selection survives configuration reloads.
+Right Super + Space switches between monocle and main across all workspaces.
+Right Super + Shift + Space toggles global floating mode and returns to the last tiled layout.
+Right Super + Space while floating exits floating mode and selects the next tiled layout.
+Windows already floating before the global toggle remain floating afterward.
 
 On Arch Linux, run `./keyd/setup.sh` to install keyd, link its configuration at
 `/etc/keyd/default.conf`, and enable the service.

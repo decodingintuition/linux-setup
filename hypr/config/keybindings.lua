@@ -20,6 +20,7 @@ hl.bind(mainMod .. " + SHIFT + Y", hl.dsp.exec_cmd("grimblast save area ~/Downlo
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("~/.config/hypr/scripts/cycle-layout.sh"))
+hl.bind(mainMod .. " + SHIFT + SPACE", hl.dsp.exec_cmd("~/.config/hypr/scripts/cycle-layout.sh toggle-floating"))
 hl.bind(mainMod .. " + Tab", hl.dsp.layout("cyclenext"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
