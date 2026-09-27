@@ -3,7 +3,7 @@ set -euo pipefail
 
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 config_dir="${XDG_CONFIG_HOME:-$HOME/.config}"
-components=(hypr waybar keyd)
+components=(hypr waybar keyd swaync)
 
 # Check every destination before creating links.
 for component in "${components[@]}"; do

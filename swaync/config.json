@@ -1,0 +1,36 @@
+{
+    "$schema": "/etc/xdg/swaync/configSchema.json",
+    "ignore-gtk-theme": true,
+    "positionX": "right",
+    "positionY": "top",
+    "layer": "overlay",
+    "control-center-layer": "top",
+    "cssPriority": "user",
+    "control-center-margin-top": 8,
+    "control-center-margin-right": 8,
+    "control-center-margin-bottom": 8,
+    "control-center-width": 420,
+    "control-center-height": 600,
+    "notification-window-width": 420,
+    "timeout": 8,
+    "timeout-low": 4,
+    "timeout-critical": 0,
+    "keyboard-shortcuts": true,
+    "notification-grouping": true,
+    "hide-on-clear": false,
+    "hide-on-action": true,
+    "widgets": ["title", "dnd", "notifications"],
+    "widget-config": {
+        "title": {
+            "text": "Notifications",
+            "clear-all-button": true,
+            "button-text": "Clear"
+        },
+        "dnd": {
+            "text": "Do Not Disturb"
+        },
+        "notifications": {
+            "vexpand": true
+        }
+    }
+}

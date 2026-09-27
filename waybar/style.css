@@ -87,6 +87,7 @@ window#waybar {
 #custom-mouse,
 #custom-keyboard,
 #custom-headphones,
+#custom-notification,
 #cpu,
 #memory,
 #network,
@@ -128,6 +129,15 @@ window#waybar {
 
 #pulseaudio.muted {
     color: #543f4e;
+}
+
+#custom-notification {
+    color: #bb81e0;
+}
+
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none {
+    color: #928991;
 }
 
 #tray {

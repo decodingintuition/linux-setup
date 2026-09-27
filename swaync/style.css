@@ -1,0 +1,72 @@
+/* Noita colors override the packaged SwayNC theme. */
+:root {
+    --cc-bg: #111217;
+    --noti-bg: 17, 18, 23;
+    --noti-bg-alpha: 1;
+    --noti-bg-darker: #111217;
+    --noti-bg-hover: #20222d;
+    --noti-bg-focus: #253138;
+    --noti-border-color: #76c395;
+    --noti-close-bg: #20222d;
+    --noti-close-bg-hover: #482424;
+    --text-color: #c7c7c7;
+    --text-color-disabled: #928991;
+    --bg-selected: #76c395;
+    --border-radius: 0px;
+    --notification-shadow: none;
+    --font-size-body: 15px;
+    --font-size-summary: 16px;
+}
+
+* {
+    font-family: "JetBrains Mono", "FantasqueSansM Nerd Font Mono", monospace;
+}
+
+.control-center {
+    border: 1px solid #76c395;
+}
+
+.widget-title > label {
+    color: #76c395;
+    font-size: 20px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
+    color: #fff66d;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+    color: #879e9a;
+    font-size: 13px;
+}
+
+.notification-row .notification-background .notification.critical {
+    border-color: #d86761;
+}
+
+.widget-title > button,
+.notification-action > button {
+    background: #20222d;
+    color: #c7c7c7;
+    border: 1px solid #879e9a;
+}
+
+.widget-title > button:hover,
+.notification-action > button:hover {
+    background: #253138;
+    border-color: #76c395;
+}
+
+.widget-dnd switch {
+    background: #20222d;
+    border: 1px solid #879e9a;
+}
+
+.widget-dnd switch:checked {
+    background: #76c395;
+    border-color: #76c395;
+}
+
+.widget-dnd switch slider {
+    background: #c7c7c7;
+}

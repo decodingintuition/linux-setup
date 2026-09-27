@@ -5,6 +5,7 @@ hl.env("GTK_THEME", "Adwaita-dark")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.on("hyprland.start", function()
     hl.exec_cmd("nm-applet &")
+    hl.exec_cmd("systemctl --user start swaync.service")
     hl.exec_cmd("waybar &")
 end)
 -- Run at startup and on each reload, matching the previous exec entries.

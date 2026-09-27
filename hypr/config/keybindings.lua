@@ -14,6 +14,7 @@ hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("command -v hyprshutdown >/de
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("pavucontrol"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("blueman-manager"))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
 hl.bind(mainMod .. " + semicolon", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("grimblast copy area"))
 hl.bind(mainMod .. " + SHIFT + Y", hl.dsp.exec_cmd("grimblast save area ~/Downloads/$(date +%Y%m%d-%H%M%S).png"))

@@ -15,6 +15,7 @@
       "custom/headphones",
       "network",
       "pulseaudio",
+      "custom/notification",
       "tray"
     ],
 
@@ -92,6 +93,27 @@
         "return-type": "json",
         "restart-interval": 2,
         "tooltip": true
+    },
+
+    "custom/notification": {
+        "exec": "swaync-client -swb",
+        "return-type": "json",
+        "restart-interval": 2,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂜",
+            "dnd-notification": "󰂠",
+            "dnd-none": "󰪓",
+            "inhibited-notification": "󰂛",
+            "inhibited-none": "󰪑",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰪑"
+        },
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "tooltip": true,
+        "escape": true
     },
 
     "tray": {

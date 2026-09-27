@@ -3,14 +3,15 @@
 Hyprland configuration and helper scripts live in `hypr/`.
 Waybar configuration and styling live in `waybar/`.
 keyd keyboard configuration and its system setup helper live in `keyd/`.
+SwayNotificationCenter configuration and Noita styling live in `swaync/`.
 
-Run `./install.sh` to link `~/.config/hypr`, `~/.config/waybar`, and
-`~/.config/keyd` to the matching directories in this repository.
+Run `./install.sh` to link `~/.config/hypr`, `~/.config/waybar`, `~/.config/keyd`, and
+`~/.config/swaync` to the matching directories in this repository.
 The installer uses `$XDG_CONFIG_HOME` when set and leaves existing configurations untouched.
 Move an existing configuration aside before installing on another machine.
 Running the installer again preserves an existing matching link.
 
-Edit files under `hypr/`, `waybar/`, or `keyd/` and commit changes with Git.
+Edit files under `hypr/`, `waybar/`, `keyd/`, or `swaync/` and commit changes with Git.
 Keep the repository at its installed location or recreate the link after moving it.
 Migration backups under `hypr/backups/` remain local and are excluded from Git.
 
@@ -33,6 +34,16 @@ Right Super + Space switches between monocle and main across all workspaces.
 Right Super + Shift + Space toggles global floating mode and returns to the last tiled layout.
 Right Super + Space while floating exits floating mode and selects the next tiled layout.
 Windows already floating before the global toggle remain floating afterward.
+
+Install `swaync` and `libnotify` on Arch Linux for desktop notifications.
+Hyprland starts the packaged `swaync.service` user service at login.
+Right Super + N or the Waybar bell opens notification history.
+Right-click the bell to toggle Do Not Disturb.
+Normal popups expire after eight seconds and remain in history until dismissed.
+Critical notifications remain visible until dismissed.
+The SwayNC theme extends the packaged GTK 4 stylesheet with the Noita palette.
+Reload edits with `swaync-client -R` and `swaync-client -rs`.
+Send a test popup with `notify-send "Notifications ready"`.
 
 On Arch Linux, run `./keyd/setup.sh` to install keyd, link its configuration at
 `/etc/keyd/default.conf`, and enable the service.
