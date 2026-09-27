@@ -35,6 +35,12 @@ Right Super + Shift + Space toggles global floating mode and returns to the last
 Right Super + Space while floating exits floating mode and selects the next tiled layout.
 Windows already floating before the global toggle remain floating afterward.
 
+The mouse side button `275` holds F3 while a Minecraft game window is focused.
+Other applications retain the button's normal behavior.
+Press the button without modifiers, hold it for F3 combinations, and release it to release F3.
+The release targets the original game window even after focus or modifier changes.
+Run its behavior checks with `lua tests/minecraft_mouse.lua`.
+
 Install `swaync` and `libnotify` on Arch Linux for desktop notifications.
 Hyprland starts the packaged `swaync.service` user service at login.
 Right Super + N or the Waybar bell opens notification history.
