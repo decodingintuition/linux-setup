@@ -45,6 +45,21 @@ The SwayNC theme extends the packaged GTK 4 stylesheet with the Noita palette.
 Reload edits with `swaync-client -R` and `swaync-client -rs`.
 Send a test popup with `notify-send "Notifications ready"`.
 
+Codex completion alerts use `swaync/scripts/codex-notify.py` through the global
+`notify` setting in `~/.codex/config.toml`:
+
+```toml
+notify = ["python3", "/absolute/path/to/.config/swaync/scripts/codex-notify.py"]
+```
+
+Place this setting above the first TOML section and use the installed absolute path.
+Restart or resume existing Codex sessions after changing their notification configuration.
+Each `agent-turn-complete` event sends a popup with the project, session identifier,
+and a shortened response, including when the terminal is focused.
+A completed turn can include a question and does not guarantee task success.
+SwayNC's Do Not Disturb setting still controls popup visibility.
+The hook uses the [documented Codex notification payload](https://learn.chatgpt.com/docs/config-file/config-advanced#notifications).
+
 On Arch Linux, run `./keyd/setup.sh` to install keyd, link its configuration at
 `/etc/keyd/default.conf`, and enable the service.
 This helper requires administrator authentication and preserves any different
