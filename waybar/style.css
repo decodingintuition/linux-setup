@@ -86,6 +86,7 @@ window#waybar {
 
 #custom-mouse,
 #custom-keyboard,
+#custom-headphones,
 #cpu,
 #memory,
 #network,
@@ -100,7 +101,8 @@ window#waybar {
     color: #f87d01;
 }
 
-#custom-keyboard {
+#custom-keyboard,
+#custom-headphones {
     color: #f87d01;
 }
 

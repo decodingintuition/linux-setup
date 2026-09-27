@@ -54,7 +54,33 @@ The configuration includes machine-specific display names, workspace assignments
 application commands, Waybar battery model filters, and a wallpaper path in
 `hypr/scripts/set-wallpaper.sh`.
 
-Waybar battery modules use Python 3 and UPower to find the configured mouse and keyboard models.
-Missing battery readings display `N/A`, including wired connections without battery reporting.
-Reported charging states show a lightning indicator.
+Waybar battery modules refresh every second using Python 3, PyGObject, BlueZ, and UPower.
+On Arch Linux the packages are `python`, `python-gobject`, `bluez`, and `upower`.
+Model filters live in `waybar/config.jsonc`.
+
+| Device | Battery source | Charging state |
+| --- | --- | --- |
+| Keychron M6 | USB status query once per second, Bluetooth fallback | USB reports charging |
+| NuPhy Air75 V3 | BlueZ battery service | Bluetooth reports percentage only |
+| AirPods Max | Persistent Apple battery notifications over Bluetooth | Reports charging when connected |
+
+The USB mouse query requires read/write access to its vendor `/dev/hidraw*` interface.
+The current system already grants this access.
+The AirPods connection subscribes to status without changing audio or listening settings.
+Bluetooth levels are device-reported updates, so a one-second display refresh does not force
+a new hardware measurement every second.
+Keyboard USB charging telemetry remains unverified and has no custom USB reader.
+UPower provides a fallback for wired devices with standard battery reporting.
+
+Missing readings display `N/A`, and reported charging states show a lightning indicator.
+Each device shares one reader across all bars through a runtime lock and cache.
+Readers rediscover devices after reconnects and clear disconnected Bluetooth readings.
+For a live diagnostic, run `waybar/scripts/battery.py mouse --model "Keychron M6" --watch`.
+Without `--watch`, the script prints the UPower snapshot only.
+
+The M6 query follows [Keychron Launcher](https://launcher.keychron.com/), using report
+`0xB3`, command `0x06`, and the packed percentage/charging byte in response `0xB4`.
+The AirPods handshake and subscription follow the
+[AAP protocol implementation](https://github.com/superninjv/airpods-helper/tree/main/daemon/src/aap),
+with the Max component identifier verified against the connected headset.
 Run battery checks with `python -m unittest discover -s tests -p 'test_battery.py'`.
