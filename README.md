@@ -39,6 +39,11 @@ Install `swaync` and `libnotify` on Arch Linux for desktop notifications.
 Hyprland starts the packaged `swaync.service` user service at login.
 Right Super + N or the Waybar bell opens notification history.
 Right-click the bell to toggle Do Not Disturb.
+The panel's **Show notifications on** buttons choose **Primary** for the left display
+`DP-1` or **Second** for the right display `DP-2`, which is the default.
+The selection persists in `swaync/config.json` across reloads and restarts.
+Only popup placement changes, and the notification panel still opens on the focused display.
+SwayNC falls back to the focused display when the selected monitor is disconnected.
 Normal popups expire after eight seconds and remain in history until dismissed.
 Critical notifications remain visible until dismissed.
 The SwayNC theme extends the packaged GTK 4 stylesheet with the Noita palette.

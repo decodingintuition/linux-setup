@@ -12,6 +12,7 @@
     "control-center-width": 420,
     "control-center-height": 600,
     "notification-window-width": 420,
+    "notification-window-preferred-output": "DP-2",
     "timeout": 8,
     "timeout-low": 4,
     "timeout-critical": 0,
@@ -19,7 +20,13 @@
     "notification-grouping": true,
     "hide-on-clear": false,
     "hide-on-action": true,
-    "widgets": ["title", "dnd", "notifications"],
+    "widgets": [
+        "title",
+        "dnd",
+        "label#notification-monitor",
+        "buttons-grid#notification-monitor",
+        "notifications"
+    ],
     "widget-config": {
         "title": {
             "text": "Notifications",
@@ -28,6 +35,27 @@
         },
         "dnd": {
             "text": "Do Not Disturb"
+        },
+        "label#notification-monitor": {
+            "text": "Show notifications on",
+            "max-lines": 1
+        },
+        "buttons-grid#notification-monitor": {
+            "buttons-per-row": 2,
+            "actions": [
+                {
+                    "label": "Primary",
+                    "type": "toggle",
+                    "active": false,
+                    "command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-1"
+                },
+                {
+                    "label": "Second",
+                    "type": "toggle",
+                    "active": true,
+                    "command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-2"
+                }
+            ]
         },
         "notifications": {
             "vexpand": true

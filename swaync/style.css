@@ -70,3 +70,27 @@
 .widget-dnd switch slider {
     background: #c7c7c7;
 }
+
+.widget-label {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    color: #879e9a;
+}
+
+.widget-buttons-grid flowboxchild > button {
+    background: #20222d;
+    color: #c7c7c7;
+    border: 1px solid #879e9a;
+    padding: 8px 16px;
+}
+
+.widget-buttons-grid flowboxchild > button:hover {
+    background: #253138;
+    border-color: #76c395;
+}
+
+.widget-buttons-grid flowboxchild > button.toggle:checked {
+    background: #76c395;
+    color: #111217;
+    border-color: #76c395;
+}
