@@ -73,15 +73,17 @@
     },
 
     "custom/mouse": {
-        "exec": "upower -i /org/freedesktop/UPower/devices/mouse_dev_D2_32_E7_34_34_4F 2>/dev/null | awk '/percentage/{print \"󰍽 \" $2}'",
+        "exec": "~/.config/waybar/scripts/battery.py mouse --model \"Keychron M6\"",
+        "return-type": "json",
         "interval": 60,
-        "tooltip": false
+        "tooltip": true
     },
 
     "custom/keyboard": {
-        "exec": "upower -i /org/freedesktop/UPower/devices/keyboard_dev_F3_00_5E_0D_B6_B2 2>/dev/null | awk '/percentage/{print \"󰌌 \" $2}'",
+        "exec": "~/.config/waybar/scripts/battery.py keyboard --model \"Air75\"",
+        "return-type": "json",
         "interval": 60,
-        "tooltip": false
+        "tooltip": true
     },
 
     "tray": {

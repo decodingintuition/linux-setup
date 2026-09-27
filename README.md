@@ -51,5 +51,10 @@ The keyboard reports different modifier names from its physical labels.
 Review `keyd/default.conf` and `hypr/keymap-mod3.xkb` before using another layout.
 
 The configuration includes machine-specific display names, workspace assignments,
-application commands, Waybar device identifiers, and a wallpaper path in
+application commands, Waybar battery model filters, and a wallpaper path in
 `hypr/scripts/set-wallpaper.sh`.
+
+Waybar battery modules use Python 3 and UPower to find the configured mouse and keyboard models.
+Missing battery readings display `N/A`, including wired connections without battery reporting.
+Reported charging states show a lightning indicator.
+Run battery checks with `python -m unittest discover -s tests -p 'test_battery.py'`.
