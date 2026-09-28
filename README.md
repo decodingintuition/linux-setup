@@ -53,6 +53,14 @@ SwayNC falls back to the focused display when the selected monitor is disconnect
 Normal popups expire after eight seconds and remain in history until dismissed.
 Critical notifications remain visible until dismissed.
 The SwayNC theme extends the packaged GTK 4 stylesheet with the Noita palette.
+The installer also links a `swaync.service` override that puts notification icons
+beside the title, leaving the body the full width of the popup.
+The launcher requires Python 3 and `gresource`, provided by `glib2-devel` on Arch.
+It adapts the installed notification template at startup through a
+[GLib resource overlay](https://docs.gtk.org/gio/struct.Resource.html#overlays)
+and falls back to the packaged layout if the template is incompatible.
+After installing the service override, run `systemctl --user daemon-reload`
+and `systemctl --user restart swaync`.
 Reload edits with `swaync-client -R` and `swaync-client -rs`.
 Send a test popup with `notify-send "Notifications ready"`.
 

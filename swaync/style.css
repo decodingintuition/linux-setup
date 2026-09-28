@@ -14,7 +14,8 @@
     --bg-selected: #76c395;
     --border-radius: 0px;
     --notification-shadow: none;
-    --notification-icon-size: 40px;
+    --notification-icon-size: 24px;
+    --notification-app-icon-size: 12px;
     --font-size-body: 16px;
     --font-size-summary: 18px;
 }
@@ -41,7 +42,7 @@
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .image {
-    margin: 0 14px 0 0;
+    margin: 0 10px 0 0;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box label {

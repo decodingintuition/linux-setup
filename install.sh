@@ -3,14 +3,14 @@ set -euo pipefail
 
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 config_dir="${XDG_CONFIG_HOME:-$HOME/.config}"
-components=(hypr waybar keyd swaync)
+components=(hypr waybar keyd swaync systemd/user/swaync.service.d/notification-layout.conf)
 
 # Check every destination before creating links.
 for component in "${components[@]}"; do
     source_dir="$repo_dir/$component"
     target="$config_dir/$component"
-    if [[ ! -d "$source_dir" ]]; then
-        printf 'Missing configuration directory: %s\n' "$source_dir" >&2
+    if [[ ! -e "$source_dir" ]]; then
+        printf 'Missing configuration: %s\n' "$source_dir" >&2
         exit 1
     fi
     if [[ -L "$target" && "$(readlink -f -- "$target")" == "$source_dir" ]]; then
@@ -30,6 +30,7 @@ for component in "${components[@]}"; do
         printf 'Already linked: %s -> %s\n' "$target" "$source_dir"
         continue
     fi
+    mkdir -p -- "$(dirname -- "$target")"
     ln -s -- "$source_dir" "$target"
     printf 'Linked: %s -> %s\n' "$target" "$source_dir"
 done
