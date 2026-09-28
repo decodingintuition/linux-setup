@@ -14,8 +14,9 @@
     --bg-selected: #76c395;
     --border-radius: 0px;
     --notification-shadow: none;
-    --font-size-body: 15px;
-    --font-size-summary: 16px;
+    --notification-icon-size: 40px;
+    --font-size-body: 16px;
+    --font-size-summary: 18px;
 }
 
 * {
@@ -31,8 +32,29 @@
     font-size: 20px;
 }
 
+.notification-row .notification-background {
+    padding: 8px 12px;
+}
+
+.notification-row .notification-background .notification .notification-default-action {
+    padding: 14px 18px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .image {
+    margin: 0 14px 0 0;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box label {
+    font-family: "Noto Sans", sans-serif;
+}
+
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
     color: #fff66d;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .body {
+    margin-top: 8px;
+    line-height: 1.35;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
