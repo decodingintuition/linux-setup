@@ -7,6 +7,9 @@ exec 9>"$runtime_dir/hypr-gamma-toggle.lock"
 flock 9
 
 if pkill -u "$UID" -x wl-gammactl; then
+    pidwait -u "$UID" -x wl-gammactl || true
+    # Hyprland resets gamma on disconnect without scheduling a redraw.
+    hyprctl -r monitors >/dev/null
     exit 0
 fi
 
