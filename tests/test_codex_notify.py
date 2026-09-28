@@ -3,6 +3,7 @@ from pathlib import Path
 import subprocess
 import unittest
 from unittest.mock import patch
+import xml.etree.ElementTree as ET
 
 spec = importlib.util.spec_from_file_location(
     "codex_notify", Path(__file__).resolve().parents[1] / "swaync/scripts/codex-notify.py"
@@ -31,6 +32,35 @@ class CodexNotifyTests(unittest.TestCase):
                 with patch("sys.argv", ["codex-notify.py", argument]):
                     hook.main()
             run.assert_not_called()
+
+    def test_markdown_labels_are_rendered_before_sending(self):
+        with patch.object(hook.subprocess, "run") as run:
+            hook.notify({"type": "agent-turn-complete", "last-assistant-message":
+                         "**Situation:** Fixed.\n\n**Result:** Ready."})
+        self.assertEqual(run.call_args.args[0][-1], "<b>Situation:</b> Fixed. <b>Result:</b> Ready.")
+
+    def test_basic_markdown_preserves_literal_code_and_link_labels(self):
+        result = hook.notification_body(
+            "__Bold__ and *italic* with _emphasis_, `a ** b < c`, "
+            "[the file](/tmp/file.py), and snake_case_names."
+        )
+        self.assertEqual(result, "<b>Bold</b> and <i>italic</i> with <i>emphasis</i>, "
+                         "<tt>a ** b &lt; c</tt>, the file, and snake_case_names.")
+
+    def test_markup_is_escaped_inside_formatted_text(self):
+        result = hook.notification_body('**<img src="/tmp/image"> & text**')
+        self.assertEqual(result, '<b>&lt;img src=&quot;/tmp/image&quot;&gt; &amp; text</b>')
+
+    def test_truncation_keeps_markup_balanced_and_counts_visible_text(self):
+        result = hook.notification_body("**" + "<&" * 200 + "**")
+        parsed = ET.fromstring("<body>" + result + "</body>")
+        visible = "".join(parsed.itertext())
+        self.assertEqual(len(visible), 240)
+        self.assertTrue(visible.endswith("…"))
+        self.assertEqual([node.tag for node in parsed], ["b"])
+
+    def test_unmatched_markers_remain_literal(self):
+        self.assertEqual(hook.notification_body("An unmatched **marker"), "An unmatched **marker")
 
     def test_missing_message_has_fallback(self):
         with patch.object(hook.subprocess, "run") as run:

@@ -75,6 +75,8 @@ Place this setting above the first TOML section and use the installed absolute p
 Restart or resume existing Codex sessions after changing their notification configuration.
 Each `agent-turn-complete` event sends a popup with the project, session identifier,
 and a shortened response, including when the terminal is focused.
+The preview renders basic Markdown bold, italic, and inline code, and shows link labels.
+Its length limit counts visible text and preserves complete formatting tags.
 A completed turn can include a question and does not guarantee task success.
 SwayNC's Do Not Disturb setting still controls popup visibility.
 The hook uses the [documented Codex notification payload](https://learn.chatgpt.com/docs/config-file/config-advanced#notifications).
