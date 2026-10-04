@@ -4,28 +4,32 @@ local menu = "hyprlauncher"
 -- Physical Right Super emits Right Alt here, mapped to Mod3 by the XKB keymap.
 local mainMod = "MOD3"
 
--- The side button holds F3 in legacy and native Wayland Minecraft windows.
-local minecraftMouseWindow
-hl.bind("mouse:275", function()
-    local window = hl.get_active_window()
-    local class = window and window.class:lower() or ""
-    if not class:match("^minecraft") and class ~= "com.mojang.minecraft" then
+-- Side buttons send F3 and F5 in legacy and native Wayland Minecraft windows.
+local function bindMinecraftMouseKey(button, key)
+    local minecraftMouseWindow
+    hl.bind(button, function()
+        local window = hl.get_active_window()
+        local class = window and window.class:lower() or ""
+        if not class:match("^minecraft") and class ~= "com.mojang.minecraft" then
+            minecraftMouseWindow = nil
+            return { ok = false }
+        end
+        local result = hl.dispatch(hl.dsp.send_key_state({ mods = "", key = key, state = "down", window = window }))
+        minecraftMouseWindow = result.ok and window or nil
+        return result
+    end, { auto_consuming = true })
+    hl.bind(button, function()
+        local window = minecraftMouseWindow
         minecraftMouseWindow = nil
-        return { ok = false }
-    end
-    local result = hl.dispatch(hl.dsp.send_key_state({ mods = "", key = "F3", state = "down", window = window }))
-    minecraftMouseWindow = result.ok and window or nil
-    return result
-end, { auto_consuming = true })
-hl.bind("mouse:275", function()
-    local window = minecraftMouseWindow
-    minecraftMouseWindow = nil
-    if not window then return { ok = false } end
-    if window.mapped then
-        hl.dispatch(hl.dsp.send_key_state({ mods = "", key = "F3", state = "up", window = window }))
-    end
-    return { ok = true }
-end, { release = true, auto_consuming = true, ignore_mods = true })
+        if not window then return { ok = false } end
+        if window.mapped then
+            hl.dispatch(hl.dsp.send_key_state({ mods = "", key = key, state = "up", window = window }))
+        end
+        return { ok = true }
+    end, { release = true, auto_consuming = true, ignore_mods = true })
+end
+bindMinecraftMouseKey("mouse:275", "F3")
+bindMinecraftMouseKey("mouse:274", "F5")
 
 -- Desktop shortcuts use Right Super through Mod3.
 -- Right Super+F toggles fullscreen and Right Super+Shift+F toggles maximize.
