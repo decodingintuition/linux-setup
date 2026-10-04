@@ -4,11 +4,12 @@ local menu = "hyprlauncher"
 -- Physical Right Super emits Right Alt here, mapped to Mod3 by the XKB keymap.
 local mainMod = "MOD3"
 
--- The side button holds F3 only in Minecraft.
+-- The side button holds F3 in legacy and native Wayland Minecraft windows.
 local minecraftMouseWindow
 hl.bind("mouse:275", function()
     local window = hl.get_active_window()
-    if not window or not window.class:lower():match("^minecraft") then
+    local class = window and window.class:lower() or ""
+    if not class:match("^minecraft") and class ~= "com.mojang.minecraft" then
         minecraftMouseWindow = nil
         return { ok = false }
     end
