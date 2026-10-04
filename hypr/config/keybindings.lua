@@ -29,7 +29,7 @@ local function bindMinecraftMouseKey(button, key)
     end, { release = true, auto_consuming = true, ignore_mods = true })
 end
 bindMinecraftMouseKey("mouse:275", "F3")
-bindMinecraftMouseKey("mouse:274", "F5")
+bindMinecraftMouseKey("mouse:276", "F5")
 
 -- Desktop shortcuts use Right Super through Mod3.
 -- Right Super+F toggles fullscreen and Right Super+Shift+F toggles maximize.
