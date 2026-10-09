@@ -14,6 +14,7 @@
       "custom/keyboard",
       "custom/headphones",
       "network",
+      "cffi/gamma",
       "pulseaudio",
       "custom/notification",
       "tray"
@@ -62,6 +63,10 @@
         "format-ethernet": "󰈀 {bandwidthDownBytes}",
         "format-disconnected": "󰖪 disconnected",
         "tooltip-format": "{ifname}: {ipaddr}"
+    },
+
+    "cffi/gamma": {
+        "module_path": "/home/decodingintuition/.config/waybar/modules/gamma-slider.so"
     },
 
     "pulseaudio": {

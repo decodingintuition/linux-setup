@@ -144,6 +144,37 @@ window#waybar {
     padding: 0 8px;
 }
 
+#gamma-slider {
+    padding: 0 12px;
+    color: #85c6c6;
+    border-left: 1px solid #76c395;
+}
+
+#gamma-slider scale {
+    min-width: 120px;
+    margin: 0 3px;
+}
+
+#gamma-slider trough {
+    min-height: 4px;
+    background: #253138;
+    border-radius: 2px;
+}
+
+#gamma-slider highlight {
+    min-height: 4px;
+    background: #85c6c6;
+    border-radius: 2px;
+}
+
+#gamma-slider slider {
+    min-width: 10px;
+    min-height: 10px;
+    margin: -3px 0;
+    background: #c7c7c7;
+    border-radius: 5px;
+}
+
 #tray > .passive {
     -gtk-icon-effect: dim;
 }

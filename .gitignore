@@ -1,3 +1,5 @@
 /hypr/backups/
 __pycache__/
 /swaync/monitors.local.json
+/waybar/modules/gamma-slider.so
+/waybar/modules/gamma-control

@@ -41,6 +41,23 @@ Press the button without modifiers, hold it for F3 combinations, and release it 
 The release targets the original game window even after focus or modifier changes.
 Run its behavior checks with `lua tests/minecraft_mouse.lua`.
 
+Waybar's inline gamma slider ranges from 1.00 to 3.00 in steps of 0.01.
+Drag or scroll the slider to update gamma on both displays.
+F5 toggles between neutral gamma and the last selected value while ARC Raiders is focused.
+The bars and shortcut share a persistent Wayland gamma service.
+The service updates native display gamma tables without screen shaders or compositor plugins.
+The setting survives Waybar restarts and Hyprland configuration reloads within a session.
+Slider updates keep only the latest pending value and wait for each update to finish.
+Gamma updates preserve normal rendering settings.
+If native gamma is unavailable after another gamma client has failed, start a fresh
+Hyprland session before using the slider; failed controls can remain reserved
+in Hyprland 0.56.2 until the session ends.
+Build the slider with `bash waybar/scripts/build-gamma.sh` using `gcc`, `pkgconf`,
+`gtk3` and `wayland` development files, and `wayland-scanner`.
+Only the widget and its separate service are built; the installed Hyprland package is unchanged.
+The Waybar CFFI module requires `module_path` to be an absolute path to the built
+`waybar/modules/gamma-slider.so`, so update that field after moving the configuration.
+
 Install `swaync` and `libnotify` on Arch Linux for desktop notifications.
 Hyprland starts the packaged `swaync.service` user service at login.
 Right Super + N or the Waybar bell opens notification history.

@@ -3,6 +3,7 @@
 require("config.monitors")
 require("config.startup")
 require("config.appearance")
+require("config.gamma")
 require("config.input")
 require("config.rules")
 require("config.layout")

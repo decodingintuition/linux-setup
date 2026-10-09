@@ -31,6 +31,24 @@ end
 bindMinecraftMouseKey("mouse:275", "F3")
 bindMinecraftMouseKey("mouse:276", "F5")
 
+-- F5 toggles gamma only while ARC Raiders is focused.
+local arcGammaPressed = false
+hl.bind("F5", function()
+    local window = hl.get_active_window()
+    if not window or window.class ~= "steam_app_1808500" then
+        arcGammaPressed = false
+        return { ok = false }
+    end
+    local result = hl.dispatch(hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-gamma.sh"))
+    arcGammaPressed = result.ok
+    return result
+end, { auto_consuming = true })
+hl.bind("F5", function()
+    local consumed = arcGammaPressed
+    arcGammaPressed = false
+    return { ok = consumed }
+end, { release = true, auto_consuming = true, ignore_mods = true })
+
 -- Desktop shortcuts use Right Super through Mod3.
 -- Right Super+F toggles fullscreen and Right Super+Shift+F toggles maximize.
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
@@ -46,7 +64,6 @@ hl.bind(mainMod .. " + semicolon", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("grimblast --freeze copy area"))
 hl.bind(mainMod .. " + SHIFT + Y", hl.dsp.exec_cmd("grimblast --freeze save area ~/Downloads/$(date +%Y%m%d-%H%M%S).png"))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a"))
-hl.bind(mainMod .. " + period", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-gamma.sh"))
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("~/.config/hypr/scripts/cycle-layout.sh"))
 hl.bind(mainMod .. " + SHIFT + SPACE", hl.dsp.exec_cmd("~/.config/hypr/scripts/cycle-layout.sh toggle-floating"))
