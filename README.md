@@ -45,11 +45,30 @@ Install `swaync` and `libnotify` on Arch Linux for desktop notifications.
 Hyprland starts the packaged `swaync.service` user service at login.
 Right Super + N or the Waybar bell opens notification history.
 Right-click the bell to toggle Do Not Disturb.
-The panel's **Show notifications on** buttons choose **Primary** for the left display
-`DP-1` or **Second** for the right display `DP-2`, which is the default.
-The selection persists in `swaync/config.json` across reloads and restarts.
-Only popup placement changes, and the notification panel still opens on the focused display.
-SwayNC falls back to the focused display when the selected monitor is disconnected.
+The panel's **Show notifications on** toggles use connector names **DP-1** and **DP-2**.
+Each display is independent: enable either, both, or neither.
+Do Not Disturb remains a separate control with its existing behavior.
+Choices persist in ignored `swaync/monitors.local.json`, initialized from the current output.
+History stays shared, and the notification panel opens on the focused display.
+Disconnected selected outputs remain selected without redirecting their popups.
+
+Multiple popup outputs require the local SwayNC extension because the packaged daemon
+accepts only one preferred output. The patch targets SwayNC v0.12.6 and keeps one
+notification service, with a popup window for each enabled connected display.
+Build it with `bash swaync/scripts/build-popup-daemon.sh` after installing `vala`,
+`meson`, `ninja`, `sassc`, `blueprint-compiler`, and SwayNC's development dependencies.
+The binary installs under `$XDG_DATA_HOME/linux-setup/swaync/swaync`, defaulting to
+`~/.local/share/linux-setup/swaync/swaync`, without replacing the system package.
+The launcher uses it automatically after `systemctl --user restart swaync`.
+The launcher generates `$XDG_RUNTIME_DIR/swaync-displays/config.json` from shared
+configuration and local choices. Without the local binary, the packaged daemon
+continues its original single-output behavior.
+Run state and launcher checks with `python3 -m unittest discover -s tests -p 'test_notification*.py'`.
+On this Hyprland setup, run the live routing check with
+`python3 tests/notification_outputs_live.py ~/.local/share/linux-setup/swaync/swaync`.
+It uses a separate session bus and checks popup layers for both displays, neither
+display, shared history, dismissal, and Do Not Disturb.
+
 Normal popups expire after eight seconds and remain in history until dismissed.
 Critical notifications remain visible until dismissed.
 The SwayNC theme extends the packaged GTK 4 stylesheet with the Noita palette.
@@ -61,7 +80,8 @@ It adapts the installed notification template at startup through a
 and falls back to the packaged layout if the template is incompatible.
 After installing the service override, run `systemctl --user daemon-reload`
 and `systemctl --user restart swaync`.
-Reload edits with `swaync-client -R` and `swaync-client -rs`.
+Reload configuration edits with `python3 swaync/scripts/notification-monitor.py --reload`
+and stylesheet edits with `swaync-client -rs`.
 Send a test popup with `notify-send "Notifications ready"`.
 
 Codex completion alerts use `swaync/scripts/codex-notify.py` through the global

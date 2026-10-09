@@ -12,7 +12,7 @@
     "control-center-width": 600,
     "control-center-height": 600,
     "notification-window-width": 600,
-    "notification-window-preferred-output": "DP-2",
+    "notification-window-preferred-output": "DP-1",
     "timeout": 8,
     "timeout-low": 4,
     "timeout-critical": 0,
@@ -44,16 +44,18 @@
             "buttons-per-row": 2,
             "actions": [
                 {
-                    "label": "Primary",
-                    "type": "toggle",
-                    "active": false,
-                    "command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-1"
-                },
-                {
-                    "label": "Second",
+                    "label": "DP-1",
                     "type": "toggle",
                     "active": true,
-                    "command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-2"
+                    "command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-1",
+                    "update-command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-1 --status"
+                },
+                {
+                    "label": "DP-2",
+                    "type": "toggle",
+                    "active": false,
+                    "command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-2",
+                    "update-command": "python3 ~/.config/swaync/scripts/notification-monitor.py DP-2 --status"
                 }
             ]
         },

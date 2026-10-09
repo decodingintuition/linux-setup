@@ -1,0 +1,203 @@
+diff --git a/src/configModel/configModel.vala b/src/configModel/configModel.vala
+index 5334eec..2d10ba6 100644
+--- a/src/configModel/configModel.vala
++++ b/src/configModel/configModel.vala
+@@ -667,6 +667,8 @@ namespace SwayNotificationCenter {
+          */
+         public string notification_window_preferred_output { get; set; default = ""; }
+ 
++        public string notification_window_outputs { get; set; default = ""; }
++
+         /** Hides the control center after clearing all notifications */
+         public bool hide_on_clear { get; set; default = false; }
+ 
+diff --git a/src/main.vala b/src/main.vala
+index 3d1ebfe..a508ad0 100644
+--- a/src/main.vala
++++ b/src/main.vala
+@@ -3,7 +3,7 @@ namespace SwayNotificationCenter {
+     static SwayncDaemon swaync_daemon;
+     static Widgets.Notifications notifications_widget;
+     static ControlCenter control_center;
+-    static NotificationWindow floating_notifications;
++    static NotificationWindows floating_notifications;
+ 
+     static unowned ListModel ?monitors = null;
+     static Swaync app;
+@@ -144,11 +144,10 @@ namespace SwayNotificationCenter {
+ 
+             xdg_activation = new XdgActivationHelper ();
+ 
+-            floating_notifications = new NotificationWindow ();
++            floating_notifications = new NotificationWindows ();
+             notifications_widget = new Widgets.Notifications ();
+             control_center = new ControlCenter ();
+ 
+-            add_window (floating_notifications);
+             add_window (control_center);
+ 
+             noti_daemon.on_dnd_toggle.connect ((dnd) => {
+diff --git a/src/meson.build b/src/meson.build
+index 7b9700f..ff74b62 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -65,6 +65,7 @@ app_sources = [
+   'notiDaemon/notiDaemon.vala',
+   'notiModel/notiModel.vala',
+   'notificationWindow/notificationWindow.vala',
++  'notificationWindow/notificationWindows.vala',
+   'dismissableWidget/dismissableWidget.vala',
+   'notification/notification.vala',
+   'notificationCloseButton/notificationCloseButton.vala',
+diff --git a/src/notificationWindow/notificationWindow.vala b/src/notificationWindow/notificationWindow.vala
+index 16ad406..5189e9a 100644
+--- a/src/notificationWindow/notificationWindow.vala
++++ b/src/notificationWindow/notificationWindow.vala
+@@ -10,12 +10,14 @@ namespace SwayNotificationCenter {
+         Gee.HashMap<uint32, unowned Notification> notification_ids
+             = new Gee.HashMap<uint32, unowned Notification> ();
+ 
+-        private static string ?monitor_name = null;
++        private string ?monitor_name = null;
++        private string ?pinned_output = null;
+ 
+         private const int MAX_HEIGHT = 600;
+ 
+-        public NotificationWindow () {
++        public NotificationWindow (string ?output = null) {
+             Object (css_name: "notificationwindow");
++            pinned_output = output;
+             if (app.use_layer_shell) {
+                 if (!GtkLayerShell.is_supported ()) {
+                     stderr.printf ("GTKLAYERSHELL IS NOT SUPPORTED!\n");
+@@ -63,8 +65,8 @@ namespace SwayNotificationCenter {
+                 string monitor_name = config.notification_window_preferred_output;
+                 if (old == null
+                     || old.notification_window_preferred_output != monitor_name
+-                    || NotificationWindow.monitor_name != monitor_name) {
+-                    NotificationWindow.monitor_name = null;
++                    || this.monitor_name != monitor_name) {
++                    this.monitor_name = null;
+                     set_anchor ();
+                 }
+             });
+@@ -146,9 +148,9 @@ namespace SwayNotificationCenter {
+                 }
+ 
+                 // Set the preferred monitor
+-                string ?monitor_name = ConfigModel.instance.notification_window_preferred_output;
+-                if (NotificationWindow.monitor_name != null) {
+-                    monitor_name = NotificationWindow.monitor_name;
++                string ?monitor_name = pinned_output ?? ConfigModel.instance.notification_window_preferred_output;
++                if (pinned_output == null && this.monitor_name != null) {
++                    monitor_name = this.monitor_name;
+                 }
+                 set_monitor (Functions.try_get_monitor (monitor_name));
+             }
+@@ -375,7 +377,7 @@ namespace SwayNotificationCenter {
+         public void set_monitor (Gdk.Monitor ?monitor) {
+             debug ("Setting monitor for Floating Notifications: %s",
+                    Functions.monitor_to_string (monitor) ?? "Monitor Picked by Compositor");
+-            NotificationWindow.monitor_name = monitor == null ? null : monitor.connector;
++            this.monitor_name = monitor == null ? null : monitor.connector;
+             GtkLayerShell.set_monitor (this, monitor);
+ 
+             set_input_region ();
+diff --git a/src/notificationWindow/notificationWindows.vala b/src/notificationWindow/notificationWindows.vala
+new file mode 100644
+index 0000000..8f1cee7
+--- /dev/null
++++ b/src/notificationWindow/notificationWindows.vala
+@@ -0,0 +1,92 @@
++namespace SwayNotificationCenter {
++    // One shared notification daemon and history, with a popup window per output.
++    public class NotificationWindows : Object {
++        private Gee.HashMap<string, NotificationWindow> windows = new Gee.HashMap<string, NotificationWindow> ();
++        private Gee.ArrayList<NotificationWindow> enabled = new Gee.ArrayList<NotificationWindow> ();
++
++        public bool visible {
++            get {
++                foreach (var window in windows.values) {
++                    if (window.visible) return true;
++                }
++                return false;
++            }
++        }
++
++        public NotificationWindows () {
++            refresh ();
++            app.config_reload.connect (() => refresh ());
++            monitors.items_changed.connect (() => refresh ());
++        }
++
++        private void refresh () {
++            enabled.clear ();
++            string outputs = ConfigModel.instance.notification_window_outputs;
++            // Empty means the stock single-output behavior. "none" means no popups.
++            string[] names = outputs == "" ? new string[] { "" } : outputs.split (",");
++            foreach (string name in names) {
++                if (name == "none") continue;
++                if (name != "" && Functions.try_get_monitor (name) == null) continue;
++                NotificationWindow ?window = windows.get (name);
++                if (window == null) {
++                    window = new NotificationWindow (name == "" ? null : name);
++                    windows.set (name, window);
++                    app.add_window (window);
++                }
++                if (name != "") window.set_monitor (Functions.try_get_monitor (name));
++                if (!enabled.contains (window)) enabled.add (window);
++            }
++            foreach (var window in windows.values) {
++                if (!enabled.contains (window)) window.remove_all_notifications (false, null);
++            }
++        }
++
++        public void add_notification (NotifyParams param) {
++            foreach (var window in enabled) window.add_notification (param);
++        }
++
++        public void replace_notification (uint32 id, NotifyParams param) {
++            foreach (var window in enabled) window.replace_notification (id, param);
++        }
++
++        public void remove_notification (uint32 id) {
++            foreach (var window in windows.values) window.remove_notification (id);
++        }
++
++        public void remove_all_notifications (bool transition, notification_filter_func ?filter) {
++            // Evaluate dismissal side effects only once for each mirrored notification.
++            var decisions = new Gee.HashMap<uint32, bool> ();
++            foreach (var window in windows.values) {
++                window.remove_all_notifications (transition, (notification) => {
++                    uint32 id = notification.param.applied_id;
++                    if (!decisions.has_key (id)) {
++                        decisions.set (id, filter == null || filter (notification));
++                    }
++                    return decisions.get (id);
++                });
++            }
++        }
++
++        private NotificationWindow ?latest_window () {
++            foreach (var window in enabled) {
++                if (window.visible) return window;
++            }
++            return null;
++        }
++
++        public NotifyParams ?get_latest_notification () {
++            var window = latest_window ();
++            return window == null ? null : window.get_latest_notification ();
++        }
++
++        public void latest_notification_action (uint32 action) {
++            var window = latest_window ();
++            if (window != null) window.latest_notification_action (action);
++        }
++
++        public void set_monitor (Gdk.Monitor ?monitor) {
++            var window = windows.get ("");
++            if (window != null) window.set_monitor (monitor);
++        }
++    }
++}

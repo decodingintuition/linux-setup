@@ -1,14 +1,17 @@
 import importlib.util
+import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'swaync/scripts'))
 spec = importlib.util.spec_from_file_location("notification_layout", ROOT / "swaync/scripts/start.py")
 layout = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(layout)
@@ -50,11 +53,37 @@ class NotificationLayoutTests(unittest.TestCase):
             with patch.dict(os.environ, environment, clear=True), \
                     patch.object(layout.subprocess, "check_output", return_value="<interface/>"), \
                     patch.object(layout.os, "execve") as execute, \
+                    patch.object(layout, "popup_binary", return_value=layout.BINARY), \
                     patch.object(layout.sys, "argv", ["start.py"]), \
                     patch.object(layout.sys, "stderr"):
                 layout.main()
             execute.assert_called_once_with(layout.BINARY, [layout.BINARY], environment)
             self.assertFalse((Path(directory) / "swaync-layout").exists())
+
+    def test_custom_daemon_starts_with_persisted_outputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            custom = base / "data/linux-setup/swaync/swaync"
+            custom.parent.mkdir(parents=True)
+            custom.touch()
+            config_dir = base / "config/swaync"
+            config_dir.mkdir(parents=True)
+            (config_dir / "config.json").write_text((ROOT / "swaync/config.json").read_text())
+            (config_dir / "monitors.local.json").write_text('{"outputs": ["DP-1", "DP-2"]}')
+            environment = {
+                "XDG_RUNTIME_DIR": str(base / "runtime"),
+                "XDG_DATA_HOME": str(base / "data"),
+                "XDG_CONFIG_HOME": str(base / "config"),
+            }
+            with patch.dict(os.environ, environment, clear=True), \
+                    patch.object(layout.subprocess, "check_output", return_value="<interface/>"), \
+                    patch.object(layout.os, "execve") as execute, \
+                    patch.object(layout.sys, "argv", ["start.py"]), \
+                    patch.object(layout.sys, "stderr"):
+                layout.main()
+            runtime = base / "runtime/swaync-displays/config.json"
+            self.assertEqual(json.loads(runtime.read_text())["notification-window-outputs"], "DP-1,DP-2")
+            execute.assert_called_once_with(str(custom), [str(custom), "--config", str(runtime)], environment)
 
 
 if __name__ == "__main__":
