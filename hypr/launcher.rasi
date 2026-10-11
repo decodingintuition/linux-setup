@@ -93,6 +93,7 @@ element-text {
 }
 
 textbox-hint {
+    expand: false;
     content: "Enter  launch     ↑↓  select     Esc  close";
     font: "JetBrains Mono 10";
     text-color: @muted;
