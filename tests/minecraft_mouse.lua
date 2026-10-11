@@ -1,3 +1,5 @@
+package.path = "hypr/?.lua;" .. package.path
+
 local active, press, release
 local sent = {}
 local function dispatcher()
