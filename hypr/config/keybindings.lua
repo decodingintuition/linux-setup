@@ -1,6 +1,6 @@
 local terminal = "wezterm"
 local fileManager = "nemo"
-local menu = "hyprlauncher"
+local menu = "rofi -show drun -config ~/.config/hypr/launcher.rasi"
 -- Physical Right Super emits Right Alt here, mapped to Mod3 by the XKB keymap.
 local mainMod = "MOD3"
 

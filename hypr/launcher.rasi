@@ -1,0 +1,102 @@
+configuration {
+    modes: [drun];
+    show-icons: true;
+    icon-theme: "breeze-dark";
+    display-drun: "";
+    drun-display-format: "{name}";
+    drun-match-fields: "name,generic,keywords";
+    matching: "fuzzy";
+    sort: true;
+}
+
+@theme "/dev/null"
+
+* {
+    font: "JetBrains Mono 13";
+    background: #111217;
+    surface: #20222d;
+    selection: #253138;
+    foreground: #c7c7c7;
+    muted: #879e9a;
+    accent: #76c395;
+
+    background-color: transparent;
+    text-color: @foreground;
+    border-color: @accent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    spacing: 0;
+}
+
+window {
+    width: 620px;
+    location: center;
+    anchor: center;
+    border: 2px;
+    border-radius: 16px;
+    background-color: @background;
+}
+
+mainbox {
+    children: [inputbar, listview, textbox-hint];
+    padding: 24px;
+    spacing: 16px;
+}
+
+inputbar {
+    children: [entry];
+    padding: 0 0 16px;
+    border: 0 0 1px;
+    border-color: @surface;
+}
+
+entry {
+    placeholder: "Search applications…";
+    placeholder-color: @muted;
+    cursor-color: @accent;
+}
+
+listview {
+    lines: 7;
+    columns: 1;
+    fixed-height: true;
+    dynamic: false;
+    scrollbar: false;
+    spacing: 6px;
+}
+
+element {
+    padding: 10px 12px;
+    spacing: 14px;
+    border-radius: 8px;
+}
+
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element selected.normal {
+    background-color: @selection;
+    text-color: @accent;
+}
+
+element-icon {
+    size: 28px;
+}
+
+element-text {
+    vertical-align: 0.5;
+    text-color: inherit;
+    highlight: bold;
+}
+
+textbox-hint {
+    content: "Enter  launch     ↑↓  select     Esc  close";
+    font: "JetBrains Mono 10";
+    text-color: @muted;
+    padding: 12px 0 0;
+    border: 1px 0 0;
+    border-color: @surface;
+}
